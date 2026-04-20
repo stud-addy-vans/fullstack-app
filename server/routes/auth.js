@@ -17,7 +17,6 @@ router.post("/signup", async (req, res) => {
     await user.save();
 
     res.status(200).json({ message: "User registered successfully" });
-
   } catch (err) {
     res.status(400).json({ error: "User already exists or error occurred" });
   }
@@ -34,8 +33,13 @@ router.post("/login", async (req, res) => {
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
 
-    res.status(200).json({ token });
-
+    res.status(200).json({
+      token,
+      user: {
+        name: user.name,
+        email: user.email,
+      },
+    });
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "Server error" });
