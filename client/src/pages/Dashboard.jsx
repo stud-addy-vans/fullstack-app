@@ -1,11 +1,15 @@
 import Layout from "../components/Layout";
 
+const user = JSON.parse(localStorage.getItem("user"));
+
 export default function Dashboard() {
   return (
     <Layout>
       {(dark) => (
         <>
-          <h1 style={{ color: dark ? "white" : "black" }}>Dashboard</h1>
+          <h1 style={{ color: dark ? "white" : "black" }}>
+            Welcome, {user?.name} 👋
+          </h1>
 
           <div style={styles.grid}>
             <Card text="Welcome 🎉" dark={dark} />

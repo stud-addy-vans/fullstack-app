@@ -6,33 +6,57 @@ export default function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+
+  const validate = () => {
+    let newErrors = {};
+
+    if (!name) newErrors.name = "Name is required";
+    if (!email) newErrors.email = "Email is required";
+    else if (!email.includes("@")) newErrors.email = "Enter valid email";
+    if (!password) newErrors.password = "Password is required";
+
+    return newErrors;
+  };
 
   const handleSignup = async (e) => {
     e.preventDefault();
+
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    setErrors({});
+    setLoading(true);
+
     try {
       await axios.post(
         "https://fullstack-app-ulu3.onrender.com/api/auth/signup",
         { name, email, password }
       );
+
       alert("Signup successful");
       navigate("/login");
     } catch (err) {
       alert(err.response?.data?.error || "Signup failed");
     }
+
+    setLoading(false);
   };
 
   return (
     <div style={styles.container}>
-      {/* LEFT SIDE */}
+      {/* LEFT */}
       <div style={styles.left}>
         <h1 style={styles.logo}>MyApp</h1>
-        <p style={styles.tagline}>
-          Build. Connect. Grow.
-        </p>
+        <p style={styles.tagline}>Build. Connect. Grow.</p>
       </div>
 
-      {/* RIGHT SIDE */}
+      {/* RIGHT */}
       <div style={styles.right}>
         <div style={styles.card}>
           <h2 style={styles.title}>Create Account</h2>
@@ -40,25 +64,31 @@ export default function Signup() {
           <form onSubmit={handleSignup}>
             <input
               placeholder="Name"
+              value={name}
               onChange={(e) => setName(e.target.value)}
               style={styles.input}
             />
+            {errors.name && <p style={styles.error}>{errors.name}</p>}
 
             <input
               placeholder="Email"
+              value={email}
               onChange={(e) => setEmail(e.target.value)}
               style={styles.input}
             />
+            {errors.email && <p style={styles.error}>{errors.email}</p>}
 
             <input
               placeholder="Password"
               type="password"
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
               style={styles.input}
             />
+            {errors.password && <p style={styles.error}>{errors.password}</p>}
 
             <button type="submit" style={styles.button}>
-              Sign Up
+              {loading ? "Creating..." : "Signup"}
             </button>
           </form>
 
@@ -122,7 +152,6 @@ const styles = {
     margin: "10px 0",
     borderRadius: "8px",
     border: "1px solid #e2e8f0",
-    outline: "none",
   },
   button: {
     width: "100%",
@@ -143,5 +172,10 @@ const styles = {
     color: "#2563eb",
     cursor: "pointer",
     fontWeight: "bold",
+  },
+  error: {
+    color: "red",
+    fontSize: "12px",
+    margin: "0 0 10px 0",
   },
 };

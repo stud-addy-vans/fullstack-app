@@ -26,18 +26,29 @@ export default function Layout({ children }) {
 
   return (
     <div style={{ display: "flex", height: "100vh" }}>
-      
       {/* SIDEBAR */}
-      <div style={{
-        width: "220px",
-        background: dark ? "#020617" : "#0f172a",
-        color: "white",
-        padding: "20px"
-      }}>
-        <h2>⚡ YourApp</h2>
+      <div
+        style={{
+          width: "220px",
+          background: dark ? "#020617" : "#0f172a",
+          color: "white",
+          padding: "20px",
+        }}
+      >
+        <h2 style={{ fontWeight: "bold", marginBottom: "20px" }}>
+          🚀 DevPanel
+        </h2>
 
-        <MenuItem text="Dashboard" icon={<FaHome />} onClick={() => navigate("/dashboard")} />
-        <MenuItem text="Profile" icon={<FaUser />} onClick={() => navigate("/profile")} />
+        <MenuItem
+          text="Dashboard"
+          icon={<FaHome />}
+          onClick={() => navigate("/dashboard")}
+        />
+        <MenuItem
+          text="Profile"
+          icon={<FaUser />}
+          onClick={() => navigate("/profile")}
+        />
 
         <MenuItem
           text={dark ? "Light Mode" : "Dark Mode"}
@@ -51,13 +62,15 @@ export default function Layout({ children }) {
       </div>
 
       {/* CONTENT */}
-      <div style={{
-        flex: 1,
-        background: dark ? "#020617" : "#f1f5f9",
-        color: dark ? "white" : "black",
-        padding: "30px",
-        transition: "0.3s"
-      }}>
+      <div
+        style={{
+          flex: 1,
+          background: dark ? "#020617" : "#f1f5f9",
+          color: dark ? "white" : "black",
+          padding: "30px",
+          transition: "0.3s",
+        }}
+      >
         {children(dark)}
       </div>
     </div>
@@ -70,8 +83,8 @@ function MenuItem({ text, icon, onClick }) {
     <div
       style={styles.menu}
       onClick={onClick}
-      onMouseEnter={(e) => e.currentTarget.style.background = "#1e293b"}
-      onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
+      onMouseEnter={(e) => (e.currentTarget.style.background = "#1e293b")}
+      onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
     >
       {icon} {text}
     </div>
@@ -87,7 +100,7 @@ const styles = {
     display: "flex",
     gap: "10px",
     alignItems: "center",
-    transition: "0.3s"
+    transition: "0.3s",
   },
   logout: {
     marginTop: "20px",
@@ -97,6 +110,6 @@ const styles = {
     border: "none",
     color: "white",
     borderRadius: "5px",
-    cursor: "pointer"
-  }
+    cursor: "pointer",
+  },
 };

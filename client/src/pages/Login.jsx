@@ -6,18 +6,40 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+
+  const validate = () => {
+    let newErrors = {};
+
+    if (!email) newErrors.email = "Email is required";
+    else if (!email.includes("@")) newErrors.email = "Enter valid email";
+
+    if (!password) newErrors.password = "Password is required";
+
+    return newErrors;
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    setErrors({});
     setLoading(true);
 
     try {
       const res = await axios.post(
         "https://fullstack-app-ulu3.onrender.com/api/auth/login",
-        { email, password },
+        { email, password }
       );
+
       console.log("LOGIN RESPONSE:", res.data);
+
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
@@ -45,16 +67,20 @@ export default function Login() {
           <form onSubmit={handleLogin}>
             <input
               placeholder="Email"
+              value={email}
               onChange={(e) => setEmail(e.target.value)}
               style={styles.input}
             />
+            {errors.email && <p style={styles.error}>{errors.email}</p>}
 
             <input
               placeholder="Password"
               type="password"
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
               style={styles.input}
             />
+            {errors.password && <p style={styles.error}>{errors.password}</p>}
 
             <button type="submit" style={styles.button}>
               {loading ? "Logging in..." : "Login"}
@@ -141,5 +167,10 @@ const styles = {
     color: "#2563eb",
     cursor: "pointer",
     fontWeight: "bold",
+  },
+  error: {
+    color: "red",
+    fontSize: "12px",
+    margin: "0 0 10px 0",
   },
 };
