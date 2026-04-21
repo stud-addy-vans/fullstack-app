@@ -35,11 +35,15 @@ export default function Login() {
     try {
       const res = await axios.post(
         "https://fullstack-app-ulu3.onrender.com/api/auth/login",
-        { email, password }
+        { email, password },
       );
 
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
+      
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 100);
 
       navigate("/dashboard");
     } catch (err) {

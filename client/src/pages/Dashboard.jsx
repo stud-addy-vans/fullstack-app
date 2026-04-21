@@ -1,14 +1,23 @@
+import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 
-const user = JSON.parse(localStorage.getItem("user"));
-
 export default function Dashboard() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+
+    if (storedUser && storedUser !== "undefined") {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
   return (
     <Layout>
       {(dark) => (
         <>
           <h1 style={{ color: dark ? "white" : "black" }}>
-            Welcome, {user?.name} 👋
+            Welcome, {user?.name || "User"} 👋
           </h1>
 
           <div style={styles.grid}>
