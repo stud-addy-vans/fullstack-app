@@ -77,7 +77,7 @@ export default function Layout({ children }) {
   );
 }
 
-// Sidebar Item
+// Sidebar Items
 function MenuItem({ text, icon, onClick }) {
   return (
     <div

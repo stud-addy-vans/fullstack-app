@@ -38,8 +38,6 @@ export default function Login() {
         { email, password }
       );
 
-      console.log("LOGIN RESPONSE:", res.data);
-
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
